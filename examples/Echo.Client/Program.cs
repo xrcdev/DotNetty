@@ -15,6 +15,7 @@ namespace Echo.Client
     using DotNetty.Transport.Bootstrapping;
     using DotNetty.Transport.Channels;
     using DotNetty.Transport.Channels.Sockets;
+    using Echo.Common;
     using Examples.Common;
 
     class Program
@@ -47,11 +48,15 @@ namespace Echo.Client
                         {
                             pipeline.AddLast("tls", new TlsHandler(stream => new SslStream(stream, true, (sender, certificate, chain, errors) => true), new ClientTlsSettings(targetHost)));
                         }
-                        pipeline.AddLast(new LoggingHandler());
-                        pipeline.AddLast("framing-enc", new LengthFieldPrepender(2));
-                        pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(ushort.MaxValue, 0, 2, 0, 2));
-
+                        //pipeline.AddLast(new LoggingHandler());
+                        //var len = 4;
+                        //pipeline.AddLast("framing-enc", new LengthFieldPrepender(len));
+                        //pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(int.MaxValue, 0, len, 0, len));
+                        pipeline.AddLast(new CommonEncoder<Song>());
+                        pipeline.AddLast(new CommonDecoder());
                         pipeline.AddLast("echo", new EchoClientHandler());
+                        //pipeline.AddLast(new ClientHandler());
+
                     }));
 
                 IChannel clientChannel = await bootstrap.ConnectAsync(new IPEndPoint(ClientSettings.Host, ClientSettings.Port));

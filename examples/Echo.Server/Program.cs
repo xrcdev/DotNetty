@@ -14,6 +14,7 @@ namespace Echo.Server
     using DotNetty.Transport.Channels;
     using DotNetty.Transport.Channels.Sockets;
     using DotNetty.Transport.Libuv;
+    using Echo.Common;
     using Examples.Common;
 
     class Program
@@ -67,10 +68,16 @@ namespace Echo.Server
                             pipeline.AddLast("tls", TlsHandler.Server(tlsCertificate));
                         }
                         //pipeline.AddLast(new LoggingHandler("SRV-CONN"));
-                        //pipeline.AddLast("framing-enc", new LengthFieldPrepender(2));
-                        //pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(ushort.MaxValue, 0, 2, 0, 2));
+                        //var len = 4;
+                        //pipeline.AddLast("framing-enc", new LengthFieldPrepender(len));
+                        //pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(int.MaxValue, 0, len, 0, len));
+                        pipeline.AddLast(new CommonEncoder<Song>());
+                        pipeline.AddLast(new CommonDecoder());
 
                         pipeline.AddLast("echo", new EchoServerHandler());
+                        //业务handler ，这里是实际处理业务的Handler
+                        // var serverHandler = new ServerHandler(); 
+                        // pipeline.AddLast(serverHandler);
                     }));
 
                 IChannel boundChannel = await bootstrap.BindAsync(ServerSettings.Port);

@@ -20,7 +20,10 @@ namespace Echo.Client
             this.initialMessage.WriteBytes(messageBytes);
         }
 
-        public override void ChannelActive(IChannelHandlerContext context) => context.WriteAndFlushAsync(this.initialMessage);
+        public override void ChannelActive(IChannelHandlerContext context)
+        {
+            context.WriteAndFlushAsync(this.initialMessage);
+        }
 
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
