@@ -14,6 +14,8 @@ namespace SanTint.DosingExpertCore.NettyCommon
                 if (input.ReadableBytes > 0)
                 {
                     var length = input.ReadInt();
+                    var sType = input.ReadByte();
+                    input.ReadByte();
                     //if (length < 0)
                     //    input.SetReaderIndex(input.ReaderIndex - 4);
                     byte[] array = new byte[input.ReadableBytes];
@@ -46,12 +48,13 @@ namespace SanTint.DosingExpertCore.NettyCommon
                 //initialMessage.WriteBytes(messageBytes);
                 //output.WriteInt(messageBytes.Length);
 
-                //byte[] bytes = new byte[messageBytes.Length + 4];
-
-                //var lenBites = BitConverter.GetBytes(messageBytes.Length);
+                byte[] bytes = new byte[messageBytes.Length + 2];
+                var lenBites = BitConverter.GetBytes(messageBytes.Length);
                 //lenBites.CopyTo(bytes, 0);
-                //messageBytes.CopyTo(bytes, lenBites.Length);
-                output.WriteBytes(messageBytes);
+                bytes[0] = 0x01;
+                bytes[1] = 0xff;
+                messageBytes.CopyTo(bytes, 2);
+                output.WriteBytes(bytes);
             }
             catch (Exception ex)
             {
