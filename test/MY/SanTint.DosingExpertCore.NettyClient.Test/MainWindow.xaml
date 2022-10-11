@@ -1,0 +1,38 @@
+﻿<Window
+    x:Class="SanTint.DosingExpertCore.NettyClient.Test.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:SanTint.DosingExpertCore.NettyClient.Test"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="MainWindow"
+    Width="800"
+    Height="450"
+    mc:Ignorable="d">
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Style.Setters>
+                <Setter Property="Margin" Value="5" />
+                <Setter Property="HorizontalAlignment" Value="Left" />
+            </Style.Setters>
+        </Style>
+    </Window.Resources>
+    <Grid>
+        <StackPanel>
+            <Button
+                x:Name="btnConnect"
+                Click="btnConnect_Click"
+                Content="建立连接" />
+            <Button
+                x:Name="btnSend"
+                Click="btnSend_Click"
+                Content="发送消息" />
+            <Button
+                x:Name="btnOff"
+                Click="btnOff_Click"
+                Content="断开连接" />
+
+        </StackPanel>
+
+    </Grid>
+</Window>

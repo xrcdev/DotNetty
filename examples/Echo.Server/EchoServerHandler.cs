@@ -10,6 +10,7 @@ namespace Echo.Server
 
     public class EchoServerHandler : ChannelHandlerAdapter
     {
+        static int count = 1;
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
             var buffer = message as IByteBuffer;
@@ -17,7 +18,12 @@ namespace Echo.Server
             {
                 Console.WriteLine("Received from client: " + buffer.ToString(Encoding.UTF8));
             }
-            context.WriteAsync(message);
+            if (count <= 1)
+            {
+                count++;
+                context.WriteAsync(message);
+
+            }
         }
 
         public override void ChannelReadComplete(IChannelHandlerContext context) => context.Flush();
