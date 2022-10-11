@@ -55,8 +55,8 @@ namespace SanTint.DosingExpertCore.NettyClient.Test
                        {
                            IChannelPipeline pipeline = channel.Pipeline;
                            //实体类编码器
-                           pipeline.AddLast("framing-enc", new LengthFieldPrepender(4));
-                           pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 0, 4, 0, 0));
+                           //pipeline.AddLast("framing-enc", new LengthFieldPrepender(4,false));
+                           pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 1, 4, 0, 0));
 
                            //pipeline.AddLast("framing-enc", new LengthFieldPrepender(4));
                            //pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 0, 4, 0, 0));

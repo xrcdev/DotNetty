@@ -29,15 +29,14 @@ namespace DotNetty.Common.Internal.Logging
         {
         }
 
-        public bool IsTraceEnabled => this.IsEnabled(EventLevel.Verbose, Keywords.TraceEventKeyword);
+        public bool IsTraceEnabled => true;
 
-        public bool IsDebugEnabled => this.IsEnabled(EventLevel.Verbose, Keywords.DebugEventKeyword);
+        public bool IsDebugEnabled => true;
+        public bool IsInfoEnabled => true;
 
-        public bool IsInfoEnabled => this.IsEnabled(EventLevel.Informational, EventKeywords.None);
+        public bool IsWarningEnabled => true;
 
-        public bool IsWarningEnabled => this.IsEnabled(EventLevel.Warning, EventKeywords.None);
-
-        public bool IsErrorEnabled => this.IsEnabled(EventLevel.Error, EventKeywords.None);
+        public bool IsErrorEnabled => true;
 
         [NonEvent]
         public void Trace(string source, string message) => this.Trace(source, message, string.Empty);
@@ -48,6 +47,7 @@ namespace DotNetty.Common.Internal.Logging
             if (this.IsTraceEnabled)
             {
                 this.Trace(source, message, exception?.ToString() ?? string.Empty);
+                System.Diagnostics.Debug.WriteLine($"бя[{DateTime.Now.ToString()}]: {message}");
             }
         }
 
@@ -57,6 +57,8 @@ namespace DotNetty.Common.Internal.Logging
             if (this.IsTraceEnabled)
             {
                 this.WriteEvent(TraceEventId, source, message, info);
+                System.Diagnostics.Debug.WriteLine($"бя[{DateTime.Now.ToString()}]: {message}");
+
             }
         }
 
@@ -69,6 +71,8 @@ namespace DotNetty.Common.Internal.Logging
             if (this.IsDebugEnabled)
             {
                 this.Debug(source, message, exception?.ToString() ?? string.Empty);
+                System.Diagnostics.Debug.WriteLine($"бя[{DateTime.Now.ToString()}]: {message}");
+
             }
         }
 
@@ -78,6 +82,7 @@ namespace DotNetty.Common.Internal.Logging
             if (this.IsDebugEnabled)
             {
                 this.WriteEvent(DebugEventId, source, message, info);
+                System.Diagnostics.Debug.WriteLine($"бя[{DateTime.Now.ToString()}]: {message}");
             }
         }
 
@@ -90,6 +95,8 @@ namespace DotNetty.Common.Internal.Logging
             if (this.IsInfoEnabled)
             {
                 this.Info(source, message, exception?.ToString() ?? string.Empty);
+                System.Diagnostics.Debug.WriteLine($"бя[{DateTime.Now.ToString()}]: {message}");
+
             }
         }
 
@@ -99,6 +106,8 @@ namespace DotNetty.Common.Internal.Logging
             if (this.IsInfoEnabled)
             {
                 this.WriteEvent(InfoEventId, source, message, info);
+                System.Diagnostics.Debug.WriteLine($"бя[{DateTime.Now.ToString()}]: {message}");
+
             }
         }
 
@@ -111,6 +120,8 @@ namespace DotNetty.Common.Internal.Logging
             if (this.IsWarningEnabled)
             {
                 this.Warning(source, message, exception?.ToString() ?? string.Empty);
+                System.Diagnostics.Debug.WriteLine($"бя[{DateTime.Now.ToString()}]: {message}");
+
             }
         }
 
@@ -132,6 +143,8 @@ namespace DotNetty.Common.Internal.Logging
             if (this.IsErrorEnabled)
             {
                 this.Error(source, message, exception?.ToString() ?? string.Empty);
+                System.Diagnostics.Debug.WriteLine($"бя[{DateTime.Now.ToString()}]: {message}");
+
             }
         }
 
@@ -141,6 +154,7 @@ namespace DotNetty.Common.Internal.Logging
             if (this.IsErrorEnabled)
             {
                 this.WriteEvent(ErrorEventId, source, message, exception);
+                System.Diagnostics.Debug.WriteLine($"бя[{DateTime.Now.ToString()}]: {message}");
             }
         }
     }

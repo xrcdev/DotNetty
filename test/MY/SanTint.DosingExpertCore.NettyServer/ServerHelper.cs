@@ -48,9 +48,10 @@ namespace SanTint.DosingExpertCore.NettyServer
                         //同时所有出栈的消息 也要这个管道的所有处理器进行一步步处理
                         IChannelPipeline pipeline = channel.Pipeline;
 
-                        pipeline.AddLast("framing-enc", new LengthFieldPrepender(4));
-                        pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 0, 4, 0, 0));
-                        //pipeline.AddLast(new LoggingHandler());
+                        //pipeline.AddLast("framing-enc", new LengthFieldPrepender(4, false));
+                        pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 1, 4, 0, 0));
+                        var logh = new LoggingHandler("SRV-CONN", DotNetty.Handlers.Logging.LogLevel.TRACE);
+                        pipeline.AddLast(logh);
                         pipeline.AddLast(new CommonEncoder<Message>());
                         pipeline.AddLast(new CommonDecoder());
 

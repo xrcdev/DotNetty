@@ -30,6 +30,7 @@ namespace DotNetty.Common.Internal.Logging
 
         public bool IsEnabled(InternalLogLevel level)
         {
+            return true;
             switch (level)
             {
                 case InternalLogLevel.TRACE:
