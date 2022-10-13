@@ -1,7 +1,7 @@
 ﻿using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Channels;
 using Microsoft.Extensions.Logging;
-using SanTint.DosingExpertCore.NettyCommon;
+using SanTint.Message.MessageCenter.Core.NettyCommon;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SanTint.DosingExpertCore.NettyClient.Test
+namespace SanTint.Message.MessageCenter.Core.NettyClient.Test
 {
     public class ClientHandler : ChannelHandlerAdapter, IDisposable
     {
@@ -37,7 +37,7 @@ namespace SanTint.DosingExpertCore.NettyClient.Test
         //    }
         //}
 
-        internal static void SendMsgToServer(Message ms)
+        internal static void SendMsgToServer(NettyCommon.Message ms)
         {
             if (AllClients.Any())
             {
@@ -141,7 +141,7 @@ namespace SanTint.DosingExpertCore.NettyClient.Test
 
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
-            if (message is Message oo)
+            if (message is NettyCommon.Message oo)
             {
                 //FrmMain.Instance.UpdateInputTextContent("收到服务端发来的消息:" + oo.Content);
             }
@@ -184,7 +184,7 @@ namespace SanTint.DosingExpertCore.NettyClient.Test
             try
             {
                 Interlocked.Increment(ref clientConnCount);
-                context.WriteAndFlushAsync(new Message()
+                context.WriteAndFlushAsync(new NettyCommon.Message()
                 {
                     Command = COMMAND.Login,
                     Content = $"login",

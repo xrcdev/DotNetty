@@ -16,7 +16,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\src\DotNetty.Handlers\DotNetty.Handlers.csproj" />
 		<ProjectReference Include="..\..\..\src\DotNetty.Transport\DotNetty.Transport.csproj" />
-		<ProjectReference Include="..\SanTint.DosingExpertCore.NettyCommon\SanTint.DosingExpertCore.NettyCommon.csproj" />
+		<ProjectReference Include="..\SanTint.DosingExpertCore.NettyCommon\SanTint.Message.MessageCenter.Core.NettyCommon.csproj" />
 	</ItemGroup>
 
 </Project>

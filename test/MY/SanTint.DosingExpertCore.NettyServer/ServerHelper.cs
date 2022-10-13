@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SanTint.DosingExpertCore.NettyCommon;
+using SanTint.Message.MessageCenter.Core.NettyCommon;
 using System.Net;
 using DotNetty.Handlers.Timeout;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 
-namespace SanTint.DosingExpertCore.NettyServer
+namespace SanTint.Message.MessageCenter.Core.NettyServer
 {
     public class ServerHelper
     {
@@ -28,7 +28,6 @@ namespace SanTint.DosingExpertCore.NettyServer
         public async Task RunServerAsync()
         {
             MultithreadEventLoopGroup bossGroup = new MultithreadEventLoopGroup(1);
-            // 工作线程组，默认为内核数*2的线程数
             MultithreadEventLoopGroup workerGroup = new MultithreadEventLoopGroup();
             try
             {
@@ -37,11 +36,9 @@ namespace SanTint.DosingExpertCore.NettyServer
                     .Group(bossGroup, workerGroup)
                     .Channel<TcpServerSocketChannel>()
                     .Option(ChannelOption.SoBacklog, 128)
-                    .Option(ChannelOption.SoReuseport, true) // 设置端口复用
-                    .ChildOption(ChannelOption.SoReuseport, true)
                     .Option(ChannelOption.SoKeepalive, true)
-
-                    //.Option(ChannelOption.RcvbufAllocator, new AdaptiveRecvByteBufAllocator(1024, 1024, 65536))
+                    .Option(ChannelOption.SoReuseport, true)
+                    .ChildOption(ChannelOption.SoReuseport, true)
                     .ChildHandler(new ActionChannelInitializer<ISocketChannel>(channel =>
                     {
                         //工作线程连接器 是设置了一个管道，服务端主线程所有接收到的信息都会通过这个管道一层层往下传输
@@ -52,7 +49,7 @@ namespace SanTint.DosingExpertCore.NettyServer
                         pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 1, 4, 0, 0));
                         var logh = new LoggingHandler("SRV-CONN", DotNetty.Handlers.Logging.LogLevel.TRACE);
                         pipeline.AddLast(logh);
-                        pipeline.AddLast(new CommonEncoder<Message>());
+                        pipeline.AddLast(new CommonEncoder<NettyCommon.Message>());
                         pipeline.AddLast(new CommonDecoder());
 
                         //服务端为读IDLE
@@ -133,12 +130,12 @@ namespace SanTint.DosingExpertCore.NettyServer
 
         private async void ServerHandler_MessageGroupSend(object sender, MessageEventArgs e)
         {
-            await Task.Run(() => { BatchSendData(e.CMD); });
+            await Task.Run(() => { BatchSendData(e.Msg); });
         }
 
         private async void ServerHandler_MessageSend(object sender, MessageEventArgs e)
         {
-            await SingleSendData(e.CMD.Ticket, e.CMD);
+            await SingleSendData(e.Msg.Ticket, e.Msg);
         }
 
         private async void ServerHandler_MessageReceived(object sender, MessageEventArgs e)
@@ -151,21 +148,21 @@ namespace SanTint.DosingExpertCore.NettyServer
 
                 await Task.Run(() =>
                 {
-                    switch (e.CMD.Command)
+                    switch (e.Msg.Command)
                     {
                         case COMMAND.Login:
-                            MessageChannelHandler.AllClients.AddOrUpdate(e.CMD.Ticket, client._Socket.Channel, (k, v) => v);
-                            ServerHandler_MessageSend(sender, new MessageEventArgs(new Message
+                            MessageChannelHandler.AllClients.AddOrUpdate(e.Msg.Ticket, client._Socket.Channel, (k, v) => v);
+                            ServerHandler_MessageSend(sender, new MessageEventArgs(new NettyCommon.Message
                             {
                                 Command = COMMAND.Login,
                                 Content = "",
-                                Ticket = e.CMD.Ticket
+                                Ticket = e.Msg.Ticket
                             }));
-                            //FrmMain.Instance.UpdateTextBox(string.Format("User:{0} has Login.", e.CMD.Ticket));
+                            //FrmMain.Instance.UpdateTextBox(string.Format("User:{0} has Login.", e.Msg.Ticket));
                             return;
 
                         case COMMAND.Message:
-                            //FrmMain.Instance.UpdateTextBox(string.Format("Receive Msg:{0} from User:{1} 。", e.CMD.Content, e.CMD.Ticket));
+                            //FrmMain.Instance.UpdateTextBox(string.Format("Receive Msg:{0} from User:{1} 。", e.Msg.Content, e.Msg.Ticket));
                             return;
 
                         default:
@@ -191,7 +188,7 @@ namespace SanTint.DosingExpertCore.NettyServer
         {
             try
             {
-                var ms = new Message
+                var ms = new NettyCommon.Message
                 {
                     Command = COMMAND.Message,
                     Content = msg,

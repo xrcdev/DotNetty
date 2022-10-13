@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SanTint.DosingExpertCore.NettyCommon
+namespace SanTint.Message.MessageCenter.Core.NettyCommon
 {
     public delegate void CommandReceiveEvent(object sender, MessageEventArgs e);
     public delegate void MessageSendEvent(object sender, MessageEventArgs e);
@@ -12,8 +12,8 @@ namespace SanTint.DosingExpertCore.NettyCommon
     public delegate void MessageOfflineEvent(object sender, string e);
     public class MessageEventArgs : EventArgs
     {
-        public MessageEventArgs(IMessage cmd) => CMD = cmd;
+        public MessageEventArgs(Message cmd) => Msg = cmd;
 
-        public IMessage CMD { set; get; }
+        public Message Msg { set; get; }
     }
 }

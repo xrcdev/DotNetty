@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SanTint.DosingExpertCore.NettyCommon
+namespace SanTint.Message.MessageCenter.Core.NettyCommon
 {
     public static class MessagePackHelper
     {

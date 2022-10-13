@@ -4,9 +4,9 @@ using DotNetty.Transport.Channels;
 using Microsoft.Extensions.Logging;
 using DotNetty.Handlers.Timeout;
 using System.Net;
-using SanTint.DosingExpertCore.NettyCommon;
+using SanTint.Message.MessageCenter.Core.NettyCommon;
 
-namespace SanTint.DosingExpertCore.NettyServer
+namespace SanTint.Message.MessageCenter.Core.NettyServer
 {
     public class Worker : BackgroundService
     {
@@ -26,6 +26,7 @@ namespace SanTint.DosingExpertCore.NettyServer
             //    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             //    await Task.Delay(1000, stoppingToken);
             //}
+            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             await ServerHelper.Instance.RunServerAsync();
 
         }

@@ -1,4 +1,4 @@
-namespace SanTint.DosingExpertCore.NettyServer
+namespace SanTint.Message.MessageCenter.Core.NettyServer
 {
     public class Program
     {

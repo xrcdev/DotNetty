@@ -6,7 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace SanTint.DosingExpertCore.NettyClient.Test
+namespace SanTint.Message.MessageCenter.Core.NettyClient.Test
 {
     /// <summary>
     /// Interaction logic for App.xaml

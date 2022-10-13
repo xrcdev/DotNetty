@@ -2,7 +2,7 @@
 using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Channels;
 using Microsoft.Extensions.Logging;
-using SanTint.DosingExpertCore.NettyCommon;
+using SanTint.Message.MessageCenter.Core.NettyCommon;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SanTint.DosingExpertCore.NettyServer
+namespace SanTint.Message.MessageCenter.Core.NettyServer
 {
     public class MessageChannelHandler : FlowControlHandler
     {
@@ -29,36 +29,6 @@ namespace SanTint.DosingExpertCore.NettyServer
 
         #region 重写基类的方法
 
-        public override void UserEventTriggered(IChannelHandlerContext context, object evt)
-        {
-            base.UserEventTriggered(context, evt);
-            if (evt is IdleStateEvent)
-            {
-                var e = evt as IdleStateEvent;
-                switch (e.State)
-                {
-                    //长期没收到服务器推送数据
-                    case IdleState.ReaderIdle:
-                        {
-                            //可以重新连接
-                            if (!context.Channel.Active)
-                            {
-                                var endpoint = context.Channel.RemoteAddress as IPEndPoint;
-                                context.ConnectAsync(new IPEndPoint(endpoint.Address, endpoint.Port));
-                                //Logger.Write(string.Format(" 检测到不活动连接,UserEventTriggered重新连接:", endpoint.ToString()));
-                            }
-                        }
-                        break;
-                    //长期未向服务器发送数据
-                    case IdleState.WriterIdle:
-                        break;
-
-                    case IdleState.AllIdle:
-                        break;
-                }
-            }
-        }
-
         /// <summary>
         /// 当收到消息到时触发
         /// </summary>
@@ -66,9 +36,8 @@ namespace SanTint.DosingExpertCore.NettyServer
         /// <param name="message"></param>
         public override void ChannelRead(IChannelHandlerContext context, object message)
         {
-            if (message is Message oo)
+            if (message is NettyCommon.Message oo)
             {
-
                 MessageReceived?.Invoke(this, new MessageEventArgs(oo));
             }
         }
@@ -110,6 +79,36 @@ namespace SanTint.DosingExpertCore.NettyServer
                .FirstOrDefault();
                 AllClients.TryRemove(key.Key, out IChannel temp);
                 MessageOffline?.Invoke(this, key.Key);
+            }
+        }
+
+        public override void UserEventTriggered(IChannelHandlerContext context, object evt)
+        {
+            base.UserEventTriggered(context, evt);
+            if (evt is IdleStateEvent)
+            {
+                var e = evt as IdleStateEvent;
+                switch (e.State)
+                {
+                    //长期没收到服务器推送数据
+                    case IdleState.ReaderIdle:
+                        {
+                            //可以重新连接
+                            if (!context.Channel.Active)
+                            {
+                                var endpoint = context.Channel.RemoteAddress as IPEndPoint;
+                                context.ConnectAsync(new IPEndPoint(endpoint.Address, endpoint.Port));
+                                //Logger.Write(string.Format(" 检测到不活动连接,UserEventTriggered重新连接:", endpoint.ToString()));
+                            }
+                        }
+                        break;
+                    //长期未向服务器发送数据
+                    case IdleState.WriterIdle:
+                        break;
+
+                    case IdleState.AllIdle:
+                        break;
+                }
             }
         }
 

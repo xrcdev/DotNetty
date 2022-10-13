@@ -1,9 +1,9 @@
 ﻿<Window
-    x:Class="SanTint.DosingExpertCore.NettyClient.Test.MainWindow"
+    x:Class="SanTint.Message.MessageCenter.Core.NettyClient.Test.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="clr-namespace:SanTint.DosingExpertCore.NettyClient.Test"
+    xmlns:local="clr-namespace:SanTint.Message.MessageCenter.Core.NettyClient.Test"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Title="MainWindow"
     Width="800"

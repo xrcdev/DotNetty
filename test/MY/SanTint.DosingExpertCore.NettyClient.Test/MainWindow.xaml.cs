@@ -4,7 +4,7 @@ using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
-using SanTint.DosingExpertCore.NettyCommon;
+using SanTint.Message.MessageCenter.Core.NettyCommon;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SanTint.DosingExpertCore.NettyClient.Test
+namespace SanTint.Message.MessageCenter.Core.NettyClient.Test
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -60,7 +60,7 @@ namespace SanTint.DosingExpertCore.NettyClient.Test
 
                            //pipeline.AddLast("framing-enc", new LengthFieldPrepender(4));
                            //pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 0, 4, 0, 0));
-                           pipeline.AddLast(new CommonEncoder<Message>());
+                           pipeline.AddLast(new CommonEncoder<NettyCommon.Message>());
                            pipeline.AddLast(new CommonDecoder());
                            pipeline.AddLast(new IdleStateHandler(60, 0, 0));//第一个参数为读，第二个为写，第三个 
 
@@ -84,7 +84,7 @@ namespace SanTint.DosingExpertCore.NettyClient.Test
 
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
-            Message message = new Message();
+            NettyCommon.Message message = new NettyCommon.Message();
             message.Ticket = "ticket";
             message.Content = Newtonsoft.Json.JsonConvert.SerializeObject(Environment.OSVersion);
 

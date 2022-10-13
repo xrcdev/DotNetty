@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using KeyAttribute = MessagePack.KeyAttribute;
 
-namespace SanTint.DosingExpertCore.NettyCommon
+namespace SanTint.Message.MessageCenter.Core.NettyCommon
 {
     public enum COMMAND
     {
@@ -28,24 +28,24 @@ namespace SanTint.DosingExpertCore.NettyCommon
         ConnectLost = 4,
     }
 
-    public interface IMessage
-    {
-        public COMMAND Command { set; get; }
-        public string Content { get; set; }
-        public string Ticket { get; set; }
-        /// <summary>
-        /// 客户端IP
-        /// </summary>
-        public string ClientIP { get; set; }
+    //public interface IMessage
+    //{
+    //    public COMMAND Command { set; get; }
+    //    public string Content { get; set; }
+    //    public string Ticket { get; set; }
+    //    /// <summary>
+    //    /// 客户端IP
+    //    /// </summary>
+    //    public string ClientIP { get; set; }
 
-        /// <summary>
-        /// 客户端ID/标志
-        /// </summary>
-        public string ClientID { get; set; }
-    }
+    //    /// <summary>
+    //    /// 客户端ID/标志
+    //    /// </summary>
+    //    public string ClientID { get; set; }
+    //}
 
     [MessagePackObject]
-    public class Message : IMessage
+    public class Message  
     {
         [Key(0)]
         public COMMAND Command { get; set; }
@@ -60,10 +60,12 @@ namespace SanTint.DosingExpertCore.NettyCommon
 
         [Key(3)]
         public string ClientIP { get; set; }
+        
         [Key(4)]
-        public string ClientID { get; set; }
-        [Key(5)]
         public DateTime CreateTime { get; set; }
+
+        [Key(5)]
+        public bool IsRequireCache { get; set; }
     }
 
     public class BussnissMessage
