@@ -62,7 +62,7 @@ namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
         /// </summary>
         /// <param name="exec"></param>
         /// <returns></returns>
-        public IConnection Consumer(Action<object, BasicDeliverEventArgs> exec)
+        public IConnection Consume(Action<object, BasicDeliverEventArgs> exec)
         {
             var connect = _channelPool.GetConnection(_closeToken);
             var channel = connect.CreateModel();
