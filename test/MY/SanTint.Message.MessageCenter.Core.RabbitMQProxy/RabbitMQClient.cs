@@ -4,7 +4,7 @@ using System;
 using System.Reflection;
 using System.Threading.Channels;
 
-namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
+namespace SanTint.MessageCenterCore.RabbitMQProxy
 {
     /// <summary>
     /// RabbitMqClient - this class is the engine that lets you send/read messages to/from RabbitMq

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
+namespace SanTint.MessageCenterCore.RabbitMQProxy
 {
     /// <summary>
     /// Configuration class for RabbitMqClient

@@ -3,7 +3,7 @@ using DotNetty.Codecs;
 using DotNetty.Transport.Channels;
 using System;
 
-namespace SanTint.Message.MessageCenter.Core.NettyCommon
+namespace SanTint.MessageCenterCore.NettyCommon
 {
     public class CommonDecoder : ByteToMessageDecoder
     {

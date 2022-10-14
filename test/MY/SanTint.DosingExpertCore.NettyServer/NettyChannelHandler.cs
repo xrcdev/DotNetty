@@ -2,7 +2,7 @@
 using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Channels;
 using Microsoft.Extensions.Logging;
-using SanTint.Message.MessageCenter.Core.NettyCommon;
+using SanTint.MessageCenterCore.NettyCommon;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -11,9 +11,9 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SanTint.Message.MessageCenter.Core.NettyServer
+namespace SanTint.MessageCenterCore.NettyServer
 {
-    public class MessageChannelHandler : FlowControlHandler
+    public class NettyChannelHandler : FlowControlHandler
     {
         public event CommandReceiveEvent MessageReceived;
 

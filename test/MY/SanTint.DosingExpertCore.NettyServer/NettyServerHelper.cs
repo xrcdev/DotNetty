@@ -6,21 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SanTint.Message.MessageCenter.Core.NettyCommon;
+using SanTint.MessageCenterCore.NettyCommon;
 using System.Net;
 using DotNetty.Handlers.Timeout;
 using DotNetty.Codecs;
 using DotNetty.Handlers.Logging;
 
-namespace SanTint.Message.MessageCenter.Core.NettyServer
+namespace SanTint.MessageCenterCore.NettyServer
 {
-    public class ServerHelper
+    public class NettyServerHelper
     {
         private ManualResetEvent ManualReset = new ManualResetEvent(false);
 
-        public static ServerHelper Instance = new ServerHelper();
+        public static NettyServerHelper Instance = new NettyServerHelper();
 
-        private ServerHelper()
+        private NettyServerHelper()
         {
         }
 
@@ -54,7 +54,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
                         pipeline.AddLast(new IdleStateHandler(300, 0, 0)); //第一个参数为读，第二个为写，第三个为读写全部
 
                         //业务handler ，这里是实际处理业务的Handler
-                        var serverHandler = new MessageChannelHandler
+                        var serverHandler = new NettyChannelHandler
                         {
                             _Socket = pipeline.FirstContext()
                         };
@@ -104,7 +104,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
             {
                 try
                 {
-                    foreach (var item in MessageChannelHandler.AllClients)
+                    foreach (var item in NettyChannelHandler.AllClients)
                     {
                         if (!item.Value.Active)
                         {
@@ -139,7 +139,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
         {
             try
             {
-                var client = sender as MessageChannelHandler;
+                var client = sender as NettyChannelHandler;
 
                 var logTxt = $"收到客户端:{client._Socket.Channel.RemoteAddress.ToString()} 发来的消息: ";
 
@@ -148,7 +148,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
                     switch (e.Msg.Command)
                     {
                         case COMMAND.Login:
-                            MessageChannelHandler.AllClients.AddOrUpdate(e.Msg.ClientID, client._Socket.Channel, (k, v) => v);
+                            NettyChannelHandler.AllClients.AddOrUpdate(e.Msg.ClientID, client._Socket.Channel, (k, v) => v);
                             ServerHandler_MessageSend(sender, new MessageEventArgs(new NettyCommon.Message
                             {
                                 Command = COMMAND.Login,
@@ -227,7 +227,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
         {
             try
             {
-                if (MessageChannelHandler.AllClients.TryGetValue(ticket, out IChannel channel))
+                if (NettyChannelHandler.AllClients.TryGetValue(ticket, out IChannel channel))
                 {
                     await channel.WriteAndFlushAsync(obj);
                 }
@@ -247,7 +247,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
         {
             try
             {
-                MessageChannelHandler.AllClients.Values.ToList().ForEach(async s => await s.WriteAndFlushAsync(obj));
+                NettyChannelHandler.AllClients.Values.ToList().ForEach(async s => await s.WriteAndFlushAsync(obj));
             }
             catch (Exception ex)
             {

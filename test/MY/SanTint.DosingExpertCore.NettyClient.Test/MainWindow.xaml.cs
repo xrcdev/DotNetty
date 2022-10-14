@@ -4,7 +4,7 @@ using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Bootstrapping;
 using DotNetty.Transport.Channels;
 using DotNetty.Transport.Channels.Sockets;
-using SanTint.Message.MessageCenter.Core.NettyCommon;
+using SanTint.MessageCenterCore.NettyCommon;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SanTint.Message.MessageCenter.Core.NettyClient.Test
+namespace SanTint.MessageCenterCore.NettyClient 
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

@@ -1,7 +1,7 @@
 ﻿using DotNetty.Handlers.Timeout;
 using DotNetty.Transport.Channels;
 using Microsoft.Extensions.Logging;
-using SanTint.Message.MessageCenter.Core.NettyCommon;
+using SanTint.MessageCenterCore.NettyCommon;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SanTint.Message.MessageCenter.Core.NettyClient.Test
+namespace SanTint.MessageCenterCore.NettyClient 
 {
     public class ClientHandler : ChannelHandlerAdapter, IDisposable
     {

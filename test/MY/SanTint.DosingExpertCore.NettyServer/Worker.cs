@@ -4,10 +4,10 @@ using DotNetty.Transport.Channels;
 using Microsoft.Extensions.Logging;
 using DotNetty.Handlers.Timeout;
 using System.Net;
-using SanTint.Message.MessageCenter.Core.NettyCommon;
+using SanTint.MessageCenterCore.NettyCommon;
 using System.Text;
 
-namespace SanTint.Message.MessageCenter.Core.NettyServer
+namespace SanTint.MessageCenterCore.NettyServer
 {
     public class Worker : BackgroundService
     {
@@ -45,7 +45,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
             //});
             //rabbitMQClient.Publish("abc");
 
-            await ServerHelper.Instance.RunServerAsync();
+            await NettyServerHelper.Instance.RunServerAsync();
 
 
         }

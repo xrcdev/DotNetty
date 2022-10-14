@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SanTint.Message.MessageCenter.Core.NettyCommon
+namespace SanTint.MessageCenterCore.NettyCommon
 {
     public delegate void CommandReceiveEvent(object sender, MessageEventArgs e);
     public delegate void MessageSendEvent(object sender, MessageEventArgs e);

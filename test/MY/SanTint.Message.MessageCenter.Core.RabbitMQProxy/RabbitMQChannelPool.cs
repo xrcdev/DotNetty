@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
+namespace SanTint.MessageCenterCore.RabbitMQProxy
 {
     internal class RabbitMQChannelPool
     {

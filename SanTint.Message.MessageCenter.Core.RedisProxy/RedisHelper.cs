@@ -1,6 +1,6 @@
 ﻿using ServiceStack.Text;
 using StackExchange.Redis;
-namespace SanTint.Message.MessageCenter.Core.RedisProxy
+namespace SanTint.MessageCenterCore.RedisProxy
 {
     public class RedisHelper
     {

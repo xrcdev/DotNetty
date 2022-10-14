@@ -107,17 +107,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSockets.Server", "exampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSockets.Client", "examples\WebSockets.Client\WebSockets.Client.csproj", "{3326DB6E-023E-483F-9A1C-5905D3091B57}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.Message.MessageCenter.Core.NettyCommon", "test\MY\SanTint.DosingExpertCore.NettyCommon\SanTint.Message.MessageCenter.Core.NettyCommon.csproj", "{C299C632-218C-46E3-A0A4-8FADA9BDBF07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.MessageCenterCore.NettyCommon", "test\MY\SanTint.DosingExpertCore.NettyCommon\SanTint.MessageCenterCore.NettyCommon.csproj", "{C299C632-218C-46E3-A0A4-8FADA9BDBF07}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.MessageCenterCore.NettyServer", "test\MY\SanTint.DosingExpertCore.NettyServer\SanTint.MessageCenterCore.NettyServer.csproj", "{EB7DF555-EB4A-4B7F-9C2E-7665847DF4F3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.Message.MessageCenter.Core.NettyClient.Test", "test\MY\SanTint.DosingExpertCore.NettyClient.Test\SanTint.Message.MessageCenter.Core.NettyClient.Test.csproj", "{BCB03648-5E37-4D4E-8F5D-392DC52821E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.MessageCenterCore.NettyClient", "test\MY\SanTint.DosingExpertCore.NettyClient.Test\SanTint.MessageCenterCore.NettyClient.csproj", "{BCB03648-5E37-4D4E-8F5D-392DC52821E3}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyTest", "MyTest", "{A1578F94-9C7B-4E18-95F7-91FC64AE91A0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.Message.MessageCenter.Core.RabbitMQProxy", "test\MY\SanTint.Message.MessageCenter.Core.RabbitMQProxy\SanTint.Message.MessageCenter.Core.RabbitMQProxy.csproj", "{01A0BFAD-0E64-43A5-84A8-581C0B87BE0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.MessageCenterCore.RabbitMQProxy", "test\MY\SanTint.Message.MessageCenter.Core.RabbitMQProxy\SanTint.MessageCenterCore.RabbitMQProxy.csproj", "{01A0BFAD-0E64-43A5-84A8-581C0B87BE0E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.Message.MessageCenter.Core.RedisProxy", "SanTint.Message.MessageCenter.Core.RedisProxy\SanTint.Message.MessageCenter.Core.RedisProxy.csproj", "{83E5F4B2-F75A-4179-A997-CE030A9CBBC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.MessageCenterCore.RedisProxy", "SanTint.Message.MessageCenter.Core.RedisProxy\SanTint.MessageCenterCore.RedisProxy.csproj", "{83E5F4B2-F75A-4179-A997-CE030A9CBBC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

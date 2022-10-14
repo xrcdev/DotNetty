@@ -1,4 +1,4 @@
-namespace SanTint.Message.MessageCenter.Core.NettyServer
+namespace SanTint.MessageCenterCore.NettyServer
 {
     public class Program
     {

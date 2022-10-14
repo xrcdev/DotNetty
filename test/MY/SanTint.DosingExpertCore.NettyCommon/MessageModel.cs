@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using KeyAttribute = MessagePack.KeyAttribute;
 
-namespace SanTint.Message.MessageCenter.Core.NettyCommon
+namespace SanTint.MessageCenterCore.NettyCommon
 {
     /// <summary>
     /// 消息类型
