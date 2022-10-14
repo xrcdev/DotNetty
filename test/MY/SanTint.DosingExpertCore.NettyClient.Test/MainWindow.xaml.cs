@@ -24,7 +24,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SanTint.MessageCenterCore.NettyClient 
+namespace SanTint.MessageCenterCore.NettyClient
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -96,7 +96,7 @@ namespace SanTint.MessageCenterCore.NettyClient
         {
             NettyCommon.Message message = new NettyCommon.Message();
             message.Command = COMMAND.Login;
-            message.ClientID = "ticket1";
+            message.ClientID = "clientId1";
             message.Content = Newtonsoft.Json.JsonConvert.SerializeObject(new BussnissMessage() { Data = "abc" });
             clientChannel.WriteAndFlushAsync(message);
         }
@@ -105,5 +105,7 @@ namespace SanTint.MessageCenterCore.NettyClient
         {
 
         }
+
+
     }
 }

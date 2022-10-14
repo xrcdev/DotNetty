@@ -86,28 +86,7 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
 
             return _connection;
         }
-
-        internal (int channelNumber, SemaphoreSlim semaphoreSlim) GetChannelLock()
-        {
-            var currentModelIndex = Interlocked.Increment(ref _currentModelIndex);
-
-            // Interlocked.Increment can overflow and return a negative currentModelIndex.
-            // Ensure that currentModelIndex is always in the range of [0, MaxChannelCount) by using this formula.
-            // https://stackoverflow.com/a/14997413/263003
-            currentModelIndex = (currentModelIndex % MaxChannelCount + MaxChannelCount) % MaxChannelCount;
-            var modelLock = _modelLocks[currentModelIndex];
-            return (currentModelIndex, modelLock);
-        }
-        private static void SendMessage(string message, string exchangeName, string exchangeType, string routeKey, (IModel channel, IBasicProperties properties) re)
-        {
-            // push message to exchange
-            PublicationAddress publicationAddress = new PublicationAddress(exchangeType, exchangeName, routeKey);
-            re.channel.BasicPublish(publicationAddress, re.properties, System.Text.Encoding.UTF8.GetBytes(message));
-        }
-        internal void GetOrCreateChannel(CancellationToken cancellationToken, Action action)
-        {
-
-        }
+        
 
         internal void Close(IList<Exception> exceptions)
         {

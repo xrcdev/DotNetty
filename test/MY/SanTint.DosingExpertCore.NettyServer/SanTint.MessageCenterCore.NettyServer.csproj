@@ -4,8 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-SanTint.DosingExpertCore.NettyServer-6F246A32-7E40-4916-81
-	BF3-B67012E94DB5</UserSecretsId>
+    
   </PropertyGroup>
 
   <ItemGroup>
