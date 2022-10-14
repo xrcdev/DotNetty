@@ -12,7 +12,7 @@ namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
     /// </summary>
     public class RabbitMQClientConfiguration
     {
-        public IList<string> Hostnames { get; } = new List<string>();
+        public IList<string> Hostnames { get; set; } = new List<string>();
         public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
         public string ExchangeName { get; set; } = string.Empty;
@@ -24,10 +24,10 @@ namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
         public string QueueName { get; set; } = string.Empty;
 
         public RabbitMQDeliveryMode DeliveryMode { get; set; } = RabbitMQDeliveryMode.Durable;
-       
+
         public int Port { get; set; }
         public string VHost { get; set; } = string.Empty;
-      
+
         public SslOption SslOption { get; set; }
 
         public RabbitMQClientConfiguration From(RabbitMQClientConfiguration config)
@@ -58,4 +58,4 @@ namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
         Durable = 2
     }
 }
- 
+

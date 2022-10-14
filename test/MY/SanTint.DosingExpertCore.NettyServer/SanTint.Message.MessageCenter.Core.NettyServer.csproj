@@ -12,7 +12,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SanTint.Message.MessageCenter.Core.RedisProxy\SanTint.Message.MessageCenter.Core.RedisProxy.csproj" />
     <ProjectReference Include="..\..\..\src\DotNetty.Handlers\DotNetty.Handlers.csproj" />
     <ProjectReference Include="..\SanTint.DosingExpertCore.NettyCommon\SanTint.Message.MessageCenter.Core.NettyCommon.csproj" />
+    <ProjectReference Include="..\SanTint.Message.MessageCenter.Core.RabbitMQProxy\SanTint.Message.MessageCenter.Core.RabbitMQProxy.csproj" />
   </ItemGroup>
 </Project>

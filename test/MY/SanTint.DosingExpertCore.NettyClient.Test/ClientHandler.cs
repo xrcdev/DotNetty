@@ -29,7 +29,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyClient.Test
         //{
         //    try
         //    {
-        //        AllClients.AddOrUpdate(temp.Ticket, _Socket.Channel, (k, v) => v);
+        //        AllClients.AddOrUpdate(temp.ClientID, _Socket.Channel, (k, v) => v);
         //    }
         //    catch (Exception ex)
         //    {
@@ -188,7 +188,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyClient.Test
                 {
                     Command = COMMAND.Login,
                     Content = $"login",
-                    Ticket = $"clientId{clientConnCount.ToString()}"
+                    ClientID = $"clientId{clientConnCount.ToString()}"
                 }
                 );
                 AllClients.AddOrUpdate($"clientId{clientConnCount.ToString()}", context.Channel, (k, v) => v);

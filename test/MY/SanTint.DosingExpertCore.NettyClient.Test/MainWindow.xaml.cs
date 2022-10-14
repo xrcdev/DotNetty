@@ -50,22 +50,17 @@ namespace SanTint.Message.MessageCenter.Core.NettyClient.Test
                        .Group(group)
                        .Channel<TcpSocketChannel>()
                        .Option(ChannelOption.TcpNodelay, true)
-                       .Option(ChannelOption.SoKeepalive, true) //保持连接
+                       .Option(ChannelOption.SoKeepalive, true)
                        .Handler(new ActionChannelInitializer<ISocketChannel>(channel =>
                        {
                            IChannelPipeline pipeline = channel.Pipeline;
-                           //实体类编码器
-                           //pipeline.AddLast("framing-enc", new LengthFieldPrepender(4,false));
-                           pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 1, 4, 0, 0));
-
-                           //pipeline.AddLast("framing-enc", new LengthFieldPrepender(4));
-                           //pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 0, 4, 0, 0));
+                           pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2080, 1, 4, 0, 0));
                            pipeline.AddLast(new CommonEncoder<NettyCommon.Message>());
                            pipeline.AddLast(new CommonDecoder());
                            pipeline.AddLast(new IdleStateHandler(60, 0, 0));//第一个参数为读，第二个为写，第三个 
 
                            ClientHandler cHandler = new ClientHandler();
-                           //cHandler.MessageReceived += ClientHandler_MessageReceived;
+                           cHandler.MessageReceived += CHandler_MessageReceived;
                            pipeline.AddLast(cHandler);
 
                        }));
@@ -82,20 +77,27 @@ namespace SanTint.Message.MessageCenter.Core.NettyClient.Test
             }
         }
 
+        /// <summary>
+        /// 接收到消息 ,后续处理事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CHandler_MessageReceived(object sender, MessageEventArgs e)
+        {
+            Console.WriteLine(e.Msg.ToString());
+        }
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSend_Click(object sender, RoutedEventArgs e)
         {
             NettyCommon.Message message = new NettyCommon.Message();
-            message.Ticket = "ticket";
-            message.Content = Newtonsoft.Json.JsonConvert.SerializeObject(Environment.OSVersion);
-
-            //byte[] messageBytes = MessagePackHelper.SerializeToBinary(message);
-            //var len = BitConverter.GetBytes(messageBytes.Length).ToArray();
-
-            //byte[] newMsg = new byte[messageBytes.Length + 4];
-            //len.CopyTo(newMsg, 0);
-            //messageBytes.CopyTo(newMsg, len.Length);
-
-
+            message.Command = COMMAND.Login;
+            message.ClientID = "ticket1";
+            message.Content = Newtonsoft.Json.JsonConvert.SerializeObject(new BussnissMessage() { Data = "abc" });
             clientChannel.WriteAndFlushAsync(message);
         }
 

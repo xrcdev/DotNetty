@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
 {
-    internal class ChannelPool
+    internal class RabbitMQChannelPool
     {
         private readonly SemaphoreSlim[] _modelLocks = new SemaphoreSlim[MaxChannelCount];
         private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(1, 1);
@@ -20,7 +20,7 @@ namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
         private readonly IModel[] _models = new IModel[MaxChannelCount];
         private readonly IBasicProperties[] _properties = new IBasicProperties[MaxChannelCount];
         RabbitMQClientConfiguration _rabbitMQClientConfiguration;
-        public ChannelPool(RabbitMQClientConfiguration configuration)
+        public RabbitMQChannelPool(RabbitMQClientConfiguration configuration)
         {
             // RabbitMQ channels are not thread-safe.
             // https://www.rabbitmq.com/dotnet-api-guide.html#model-sharing

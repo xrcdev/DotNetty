@@ -2,6 +2,7 @@
 using RabbitMQ.Client.Events;
 using System;
 using System.Reflection;
+using System.Threading.Channels;
 
 namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
 {
@@ -17,9 +18,9 @@ namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
         // configuration member
         private readonly RabbitMQClientConfiguration _config;
         private readonly PublicationAddress _publicationAddress;
-        private readonly ChannelPool _channelPool;
+        private readonly RabbitMQChannelPool _channelPool;
         /// <summary>
-        /// Constructor for RabbitMqClient
+        /// 初始化 RabbitMqClient
         /// </summary>
         /// <param name="configuration">mandatory</param>
         public RabbitMQClient(RabbitMQClientConfiguration configuration)
@@ -27,41 +28,57 @@ namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
             _closeToken = _closeTokenSource.Token;
             // load configuration
             _config = configuration;
-            _channelPool = new ChannelPool(configuration);
+            _channelPool = new RabbitMQChannelPool(configuration);
             _publicationAddress = new PublicationAddress(_config.ExchangeType, _config.ExchangeName, _config.RouteKey);
         }
 
         /// <summary>
-        /// Publishes a message to RabbitMq ExchangeName
+        /// 发布消息
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">字符串消息</param>
         public void Publish(string message)
         {
             var re = _channelPool.GetOrCreateChannel(_closeToken);
+            re.channel.BasicReturn += Channel_BasicReturn;
+            re.channel.CallbackException += Channel_CallbackException;
             // push message to exchange
             re.channel.BasicPublish(_publicationAddress, re.properties, System.Text.Encoding.UTF8.GetBytes(message));
         }
 
         /// <summary>
-        /// Publishes a message to RabbitMq ExchangeName
+        /// 发布消息
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">泛型消息</param>
         public void Publish<T>(T message)
         {
             var strMessage = Newtonsoft.Json.JsonConvert.SerializeObject(message);
             Publish(strMessage);
         }
+
+
+        private void Channel_CallbackException(object? sender, CallbackExceptionEventArgs e)
+        {
+
+        }
+
+        private void Channel_BasicReturn(object? sender, BasicReturnEventArgs e)
+        {
+
+        }
+
+
         /// <summary>
         ///  创建消费者
-        ///   var connect = Consumer(  (model, ea) =>
+        /// </summary>
+        /// 
+        ///   例子
+        ///   var connect = Consumer( (model, ea) =>
         ///   {
         ///     Console.WriteLine(Encoding.UTF8.GetString(ea.Body.ToArray()));
         ///   });
-        ///   block
         ///   connect.close();
-        /// </summary>
-        /// <param name="exec"></param>
-        /// <returns></returns>
+        /// <param name="exec">消息处理事件</param>
+        /// <returns>连接</returns>
         public IConnection Consume(Action<object, BasicDeliverEventArgs> exec)
         {
             var connect = _channelPool.GetConnection(_closeToken);
@@ -79,6 +96,8 @@ namespace SanTint.Message.MessageCenter.Core.RabbitMQProxy
             channel.BasicConsume(_config.QueueName, false, consumer);
             return connect;
         }
+    
+        
         public void Close()
         {
             IList<Exception> exceptions = new List<Exception>();

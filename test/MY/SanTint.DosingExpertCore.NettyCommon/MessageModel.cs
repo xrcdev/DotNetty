@@ -4,6 +4,9 @@ using KeyAttribute = MessagePack.KeyAttribute;
 
 namespace SanTint.Message.MessageCenter.Core.NettyCommon
 {
+    /// <summary>
+    /// 消息类型
+    /// </summary>
     public enum COMMAND
     {
         /// <summary>
@@ -28,25 +31,13 @@ namespace SanTint.Message.MessageCenter.Core.NettyCommon
         ConnectLost = 4,
     }
 
-    //public interface IMessage
-    //{
-    //    public COMMAND Command { set; get; }
-    //    public string Content { get; set; }
-    //    public string Ticket { get; set; }
-    //    /// <summary>
-    //    /// 客户端IP
-    //    /// </summary>
-    //    public string ClientIP { get; set; }
-
-    //    /// <summary>
-    //    /// 客户端ID/标志
-    //    /// </summary>
-    //    public string ClientID { get; set; }
-    //}
-
+    
     [MessagePackObject]
-    public class Message  
+    public class Message
     {
+        /// <summary>
+        /// 消息类型
+        /// </summary>
         [Key(0)]
         public COMMAND Command { get; set; }
 
@@ -55,16 +46,23 @@ namespace SanTint.Message.MessageCenter.Core.NettyCommon
         /// </summary>
         [Key(1)]
         public string Content { get; set; }
-        [Key(2)]
-        public string Ticket { get; set; }
 
+        /// <summary>
+        /// 客户端标志
+        /// </summary>
+        [Key(2)]
+        public string ClientID { get; set; }
+
+        /// <summary>
+        /// 消息创建时间
+        /// </summary>
         [Key(3)]
-        public string ClientIP { get; set; }
-        
-        [Key(4)]
         public DateTime CreateTime { get; set; }
 
-        [Key(5)]
+        /// <summary>
+        /// 是否需要缓存,用户客户端不在线时
+        /// </summary>
+        [Key(4)]
         public bool IsRequireCache { get; set; }
     }
 
@@ -79,37 +77,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyCommon
         /// 业务数据 ,Json序列化后的字符串
         /// </summary>
         public string Data { get; set; }
-
-
-
-        /// <summary>
-        /// 消息
-        /// </summary>
-        public class Message
-        {
-            /// <summary>
-            /// 消息类型
-            /// </summary>
-            public COMMAND Command { get; set; }
-            /// <summary>
-            /// 消息内容
-            /// </summary>
-            public string Content { get; set; }
-            /// <summary>
-            /// 客户端IP
-            /// </summary>
-            public string ClientIP { get; set; }
-            /// <summary>
-            /// 客户端ID/标志
-            /// </summary>
-            public string ClientID { get; set; }
-            /// <summary>
-            /// 消息创建时间
-            /// </summary>
-            public DateTime CreateTime { get; set; }
-        }
+         
     }
-
-
 
 }

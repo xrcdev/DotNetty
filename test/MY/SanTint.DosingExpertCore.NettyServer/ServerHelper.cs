@@ -41,8 +41,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
                     .ChildOption(ChannelOption.SoReuseport, true)
                     .ChildHandler(new ActionChannelInitializer<ISocketChannel>(channel =>
                     {
-                        //工作线程连接器 是设置了一个管道，服务端主线程所有接收到的信息都会通过这个管道一层层往下传输
-                        //同时所有出栈的消息 也要这个管道的所有处理器进行一步步处理
+                        //信息会通过这个管道传输
                         IChannelPipeline pipeline = channel.Pipeline;
 
                         //pipeline.AddLast("framing-enc", new LengthFieldPrepender(4, false));
@@ -135,7 +134,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
 
         private async void ServerHandler_MessageSend(object sender, MessageEventArgs e)
         {
-            await SingleSendData(e.Msg.Ticket, e.Msg);
+            await SingleSendData(e.Msg.ClientID, e.Msg);
         }
 
         private async void ServerHandler_MessageReceived(object sender, MessageEventArgs e)
@@ -151,18 +150,18 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
                     switch (e.Msg.Command)
                     {
                         case COMMAND.Login:
-                            MessageChannelHandler.AllClients.AddOrUpdate(e.Msg.Ticket, client._Socket.Channel, (k, v) => v);
+                            MessageChannelHandler.AllClients.AddOrUpdate(e.Msg.ClientID, client._Socket.Channel, (k, v) => v);
                             ServerHandler_MessageSend(sender, new MessageEventArgs(new NettyCommon.Message
                             {
                                 Command = COMMAND.Login,
                                 Content = "",
-                                Ticket = e.Msg.Ticket
+                                ClientID = e.Msg.ClientID
                             }));
-                            //FrmMain.Instance.UpdateTextBox(string.Format("User:{0} has Login.", e.Msg.Ticket));
+                            //FrmMain.Instance.UpdateTextBox(string.Format("User:{0} has Login.", e.Msg.ClientID));
                             return;
 
                         case COMMAND.Message:
-                            //FrmMain.Instance.UpdateTextBox(string.Format("Receive Msg:{0} from User:{1} 。", e.Msg.Content, e.Msg.Ticket));
+                            //FrmMain.Instance.UpdateTextBox(string.Format("Receive Msg:{0} from User:{1} 。", e.Msg.Content, e.Msg.ClientID));
                             return;
 
                         default:
@@ -192,7 +191,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
                 {
                     Command = COMMAND.Message,
                     Content = msg,
-                    Ticket = ticket ?? ""
+                    ClientID = ticket ?? ""
                 };
 
                 SendData(ticket, ms);
@@ -280,8 +279,8 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
         //            {
         //                if (cloudMess.TicketSet.Contains(token.Key))
         //                {
-        //                    FrmMain.Instance.UpdateTextBox($"Send Message:{sendMsg} To Ticket:{token.Key}" + token.Key);
-        //                    Logger.Write($"Send Message:{sendMsg} To Ticket:{token.Key}" + token.Key);
+        //                    FrmMain.Instance.UpdateTextBox($"Send Message:{sendMsg} To ClientID:{token.Key}" + token.Key);
+        //                    Logger.Write($"Send Message:{sendMsg} To ClientID:{token.Key}" + token.Key);
         //                    try
         //                    {
         //                        //发送信息
@@ -295,13 +294,13 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
         //                    }
         //                    catch (Exception ex)
         //                    {
-        //                        Logger.Write(string.Format("Send Message: Ticket:{0}  Error:{1}" + token.Key, ex.Message), CategoryLog.Error);
+        //                        Logger.Write(string.Format("Send Message: ClientID:{0}  Error:{1}" + token.Key, ex.Message), CategoryLog.Error);
         //                    }
         //                }
         //                else
         //                {
-        //                    FrmMain.Instance.UpdateTextBox(string.Format("Ticket: {0} not in MasterServer", token.Key));
-        //                    Logger.Write(string.Format("Ticket: {0} not in MasterServer", token.Key), CategoryLog.Info);
+        //                    FrmMain.Instance.UpdateTextBox(string.Format("ClientID: {0} not in MasterServer", token.Key));
+        //                    Logger.Write(string.Format("ClientID: {0} not in MasterServer", token.Key), CategoryLog.Info);
         //                }
         //            }
         //            //foreach (string tic in cloudMess.TicketSet)
@@ -313,8 +312,8 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
         //            //}
         //            //if (!string.IsNullOrWhiteSpace(isExist))
         //            //{
-        //            //    FrmMain.Instance.UpdateTextBox(string.Format("Ticket: {0} not online", isExist));
-        //            //    Logger.Write(string.Format("Ticket: {0} not online", isExist), CategoryLog.Info);
+        //            //    FrmMain.Instance.UpdateTextBox(string.Format("ClientID: {0} not online", isExist));
+        //            //    Logger.Write(string.Format("ClientID: {0} not online", isExist), CategoryLog.Info);
         //            //}
         //        }
         //    }
