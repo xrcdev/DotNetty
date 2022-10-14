@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace SanTint.MessageCenterCore.RabbitMQProxy
@@ -13,7 +14,7 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
         private readonly SemaphoreSlim[] _modelLocks = new SemaphoreSlim[MaxChannelCount];
         private readonly SemaphoreSlim _connectionLock = new SemaphoreSlim(1, 1);
         // endpoint members
-        private const int MaxChannelCount = 8;
+        private static readonly int MaxChannelCount = 8;
         private int _currentModelIndex = -1;
         private readonly IConnectionFactory _connectionFactory;
         private volatile IConnection _connection;
@@ -86,8 +87,7 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
             return _connection;
         }
 
-
-        internal (IModel channel, IBasicProperties properties) GetOrCreateChannel(CancellationToken cancellationToken)
+        internal (int channelNumber, SemaphoreSlim semaphoreSlim) GetChannelLock()
         {
             var currentModelIndex = Interlocked.Increment(ref _currentModelIndex);
 
@@ -96,29 +96,17 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
             // https://stackoverflow.com/a/14997413/263003
             currentModelIndex = (currentModelIndex % MaxChannelCount + MaxChannelCount) % MaxChannelCount;
             var modelLock = _modelLocks[currentModelIndex];
-            modelLock.Wait(cancellationToken);
-            try
-            {
-                var model = _models[currentModelIndex];
-                var properties = _properties[currentModelIndex];
+            return (currentModelIndex, modelLock);
+        }
+        private static void SendMessage(string message, string exchangeName, string exchangeType, string routeKey, (IModel channel, IBasicProperties properties) re)
+        {
+            // push message to exchange
+            PublicationAddress publicationAddress = new PublicationAddress(exchangeType, exchangeName, routeKey);
+            re.channel.BasicPublish(publicationAddress, re.properties, System.Text.Encoding.UTF8.GetBytes(message));
+        }
+        internal void GetOrCreateChannel(CancellationToken cancellationToken, Action action)
+        {
 
-                if (model == null)
-                {
-                    var connection = GetConnection(cancellationToken);
-                    model = connection.CreateModel();
-
-                    _models[currentModelIndex] = model;
-
-                    properties = model.CreateBasicProperties();
-                    properties.DeliveryMode = (byte)_rabbitMQClientConfiguration.DeliveryMode; // persistence
-                    _properties[currentModelIndex] = properties;
-                }
-                return (model, properties);
-            }
-            finally
-            {
-                modelLock.Release();
-            }
         }
 
         internal void Close(IList<Exception> exceptions)
@@ -163,6 +151,45 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
             }
 
             _connection?.Dispose();
+        }
+
+        internal void SendMessage(CancellationToken closeToken, string message, string queueName, string exchangeName, string exchangeType, string routeKey)
+        {
+            var currentModelIndex = Interlocked.Increment(ref _currentModelIndex);
+
+            // Interlocked.Increment can overflow and return a negative currentModelIndex.
+            // Ensure that currentModelIndex is always in the range of [0, MaxChannelCount) by using this formula.
+            // https://stackoverflow.com/a/14997413/263003
+            currentModelIndex = (currentModelIndex % MaxChannelCount + MaxChannelCount) % MaxChannelCount;
+            var modelLock = _modelLocks[currentModelIndex];
+            modelLock.Wait(closeToken);
+            try
+            {
+                var model = _models[currentModelIndex];
+                var properties = _properties[currentModelIndex];
+
+                if (model == null)
+                {
+                    var connection = GetConnection(closeToken);
+                    model = connection.CreateModel();
+
+                    _models[currentModelIndex] = model;
+
+                    properties = model.CreateBasicProperties();
+                    properties.DeliveryMode = (byte)_rabbitMQClientConfiguration.DeliveryMode; // persistence
+                    _properties[currentModelIndex] = properties;
+                }
+
+                // push message to exchange
+                PublicationAddress publicationAddress = new PublicationAddress(exchangeType, exchangeName, routeKey);
+                model.BasicPublish(publicationAddress, properties, System.Text.Encoding.UTF8.GetBytes(message));
+            }
+            finally
+            {
+                modelLock.Release();
+            }
+
+
         }
     }
 }

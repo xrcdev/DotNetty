@@ -40,40 +40,14 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
         /// <param name="routeKey">路由键,不传则使用 $"{exchangeType}_{queueName}"</param>
         public void Publish(string message, string queueName, string exchangeName, string exchangeType = "direct", string routeKey = "")
         {
-            var re = _channelPool.GetOrCreateChannel(_closeToken);
+            routeKey = CheckParams(queueName, exchangeName, exchangeType, routeKey);
+            _channelPool.SendMessage(_closeToken, message, queueName, exchangeName, exchangeType, routeKey);
             //re.channel.BasicReturn += Channel_BasicReturn;
             //re.channel.CallbackException += Channel_CallbackException;
-
-            routeKey = CheckParams(queueName, exchangeName, exchangeType, routeKey);
-            // push message to exchange
-            PublicationAddress publicationAddress = new PublicationAddress(exchangeType, exchangeName, routeKey);
-            re.channel.BasicPublish(publicationAddress, re.properties, System.Text.Encoding.UTF8.GetBytes(message));
-        }
-
-        private static string CheckParams(string queueName, string exchangeName, string exchangeType, string routeKey)
-        {
-            if (string.IsNullOrWhiteSpace(queueName))
-            {
-                throw new ArgumentException($"the '{nameof(queueName)}' parameter , can't be null or empty");
-            }
-            if (string.IsNullOrWhiteSpace(exchangeName))
-            {
-                throw new ArgumentException($"the '{nameof(exchangeName)}' parameter , can't be null or empty");
-            }
-            if (string.IsNullOrWhiteSpace(exchangeType))
-            {
-                throw new ArgumentException($"the '{nameof(exchangeType)}' parameter , can't be null or empty");
-            }
-            if (string.IsNullOrWhiteSpace(routeKey))
-            {
-                routeKey = $"{exchangeType}_{queueName}";
-            }
-
-            return routeKey;
         }
 
         /// <summary>
-        /// 发布消息
+        /// 发布消息(泛型)
         /// </summary>
         /// <param name="message">泛型消息</param>
         /// <param name="queueName">消息队列名称</param>
@@ -94,12 +68,11 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
         /// <summary>
         ///  创建消费者
         /// </summary>
-        /// 
         ///   例子
         ///   var connect = Consumer( (model, ea) =>
         ///   {
         ///     Console.WriteLine(Encoding.UTF8.GetString(ea.Body.ToArray()));
-        ///   });
+        ///   },"queue1","exchange1");
         ///   connect.close();
         /// <param name="exec">消息处理事件</param>
         /// <param name="queueName">消息队列名称</param>
@@ -164,6 +137,28 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
         private void Channel_BasicReturn(object? sender, BasicReturnEventArgs e)
         {
 
+        }
+
+        private static string CheckParams(string queueName, string exchangeName, string exchangeType, string routeKey)
+        {
+            if (string.IsNullOrWhiteSpace(queueName))
+            {
+                throw new ArgumentException($"the '{nameof(queueName)}' parameter , can't be null or empty");
+            }
+            if (string.IsNullOrWhiteSpace(exchangeName))
+            {
+                throw new ArgumentException($"the '{nameof(exchangeName)}' parameter , can't be null or empty");
+            }
+            if (string.IsNullOrWhiteSpace(exchangeType))
+            {
+                throw new ArgumentException($"the '{nameof(exchangeType)}' parameter , can't be null or empty");
+            }
+            if (string.IsNullOrWhiteSpace(routeKey))
+            {
+                routeKey = $"{exchangeType}_{queueName}";
+            }
+
+            return routeKey;
         }
 
     }
