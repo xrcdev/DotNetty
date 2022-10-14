@@ -44,7 +44,6 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
                         //信息会通过这个管道传输
                         IChannelPipeline pipeline = channel.Pipeline;
 
-                        //pipeline.AddLast("framing-enc", new LengthFieldPrepender(4, false));
                         pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 1, 4, 0, 0));
                         var logh = new LoggingHandler("SRV-CONN", DotNetty.Handlers.Logging.LogLevel.TRACE);
                         pipeline.AddLast(logh);
@@ -67,8 +66,7 @@ namespace SanTint.Message.MessageCenter.Core.NettyServer
                     }));
 
                 var boundChannel = await bootstrap.BindAsync(int.Parse("8090"));
-
-                //KeepConnect();
+                 
                 ManualReset.Reset();
                 ManualReset.WaitOne();
             }

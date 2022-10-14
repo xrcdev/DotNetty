@@ -109,7 +109,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebSockets.Client", "exampl
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.Message.MessageCenter.Core.NettyCommon", "test\MY\SanTint.DosingExpertCore.NettyCommon\SanTint.Message.MessageCenter.Core.NettyCommon.csproj", "{C299C632-218C-46E3-A0A4-8FADA9BDBF07}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.Message.MessageCenter.Core.NettyServer", "test\MY\SanTint.DosingExpertCore.NettyServer\SanTint.Message.MessageCenter.Core.NettyServer.csproj", "{EB7DF555-EB4A-4B7F-9C2E-7665847DF4F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.MessageCenterCore.NettyServer", "test\MY\SanTint.DosingExpertCore.NettyServer\SanTint.MessageCenterCore.NettyServer.csproj", "{EB7DF555-EB4A-4B7F-9C2E-7665847DF4F3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.Message.MessageCenter.Core.NettyClient.Test", "test\MY\SanTint.DosingExpertCore.NettyClient.Test\SanTint.Message.MessageCenter.Core.NettyClient.Test.csproj", "{BCB03648-5E37-4D4E-8F5D-392DC52821E3}"
 EndProject
@@ -117,7 +117,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MyTest", "MyTest", "{A1578F
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.Message.MessageCenter.Core.RabbitMQProxy", "test\MY\SanTint.Message.MessageCenter.Core.RabbitMQProxy\SanTint.Message.MessageCenter.Core.RabbitMQProxy.csproj", "{01A0BFAD-0E64-43A5-84A8-581C0B87BE0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SanTint.Message.MessageCenter.Core.RedisProxy", "SanTint.Message.MessageCenter.Core.RedisProxy\SanTint.Message.MessageCenter.Core.RedisProxy.csproj", "{83E5F4B2-F75A-4179-A997-CE030A9CBBC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SanTint.Message.MessageCenter.Core.RedisProxy", "SanTint.Message.MessageCenter.Core.RedisProxy\SanTint.Message.MessageCenter.Core.RedisProxy.csproj", "{83E5F4B2-F75A-4179-A997-CE030A9CBBC7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -437,7 +437,7 @@ Global
 		{83E5F4B2-F75A-4179-A997-CE030A9CBBC7} = {A1578F94-9C7B-4E18-95F7-91FC64AE91A0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1FBD8DF1-D90A-4F21-8EB6-DA17B9431FE3}
 		{9FE6A783-C20D-4097-9988-4178E2C4CE75} = {126EA539-4B28-4B07-8B5D-D1D7F794D189}
+		SolutionGuid = {1FBD8DF1-D90A-4F21-8EB6-DA17B9431FE3}
 	EndGlobalSection
 EndGlobal
