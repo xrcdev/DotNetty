@@ -44,7 +44,7 @@ namespace SanTint.MessageCenterCore.NettyServer
                         //信息会通过这个管道传输
                         IChannelPipeline pipeline = channel.Pipeline;
 
-                        pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 1, 4, 0, 0));
+                        pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2080, 1, 4, 0, 0));
                         var logh = new LoggingHandler("SRV-CONN", DotNetty.Handlers.Logging.LogLevel.TRACE);
                         pipeline.AddLast(logh);
                         pipeline.AddLast(new CommonCodecs<NettyCommon.Message>());
