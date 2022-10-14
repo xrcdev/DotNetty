@@ -55,8 +55,8 @@ namespace SanTint.MessageCenterCore.NettyClient
                        {
                            IChannelPipeline pipeline = channel.Pipeline;
                            pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2080, 1, 4, 0, 0));
-                           pipeline.AddLast(new CommonEncoder<NettyCommon.Message>());
-                           pipeline.AddLast(new CommonDecoder());
+                           pipeline.AddLast(new CommonCodecs<NettyCommon.Message>());
+                           pipeline.AddLast(new MessageCodecs());
                            pipeline.AddLast(new IdleStateHandler(60, 0, 0));//第一个参数为读，第二个为写，第三个 
 
                            ClientHandler cHandler = new ClientHandler();

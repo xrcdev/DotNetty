@@ -5,7 +5,8 @@ using System;
 
 namespace SanTint.MessageCenterCore.NettyCommon
 {
-    public class CommonDecoder : ByteToMessageDecoder
+    
+    public class MessageCodecs : ByteToMessageDecoder
     {
         protected override void Decode(IChannelHandlerContext context, IByteBuffer input, List<object> output)
         {
@@ -30,12 +31,12 @@ namespace SanTint.MessageCenterCore.NettyCommon
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"CommonEncoder:{ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"CommonCodecs:{ex.Message}");
             }
         }
     }
 
-    public class CommonEncoder<T> : MessageToByteEncoder<T>
+    public class CommonCodecs<T> : MessageToByteEncoder<T>
     {
         protected override void Encode(IChannelHandlerContext context, T message, IByteBuffer output)
         {
@@ -58,7 +59,7 @@ namespace SanTint.MessageCenterCore.NettyCommon
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"CommonEncoder:{ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"CommonCodecs:{ex.Message}");
             }
         }
     }

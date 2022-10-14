@@ -47,8 +47,8 @@ namespace SanTint.MessageCenterCore.NettyServer
                         pipeline.AddLast("framing-dec", new LengthFieldBasedFrameDecoder(2048, 1, 4, 0, 0));
                         var logh = new LoggingHandler("SRV-CONN", DotNetty.Handlers.Logging.LogLevel.TRACE);
                         pipeline.AddLast(logh);
-                        pipeline.AddLast(new CommonEncoder<NettyCommon.Message>());
-                        pipeline.AddLast(new CommonDecoder());
+                        pipeline.AddLast(new CommonCodecs<NettyCommon.Message>());
+                        pipeline.AddLast(new MessageCodecs());
 
                         //服务端为读IDLE
                         pipeline.AddLast(new IdleStateHandler(300, 0, 0)); //第一个参数为读，第二个为写，第三个为读写全部
