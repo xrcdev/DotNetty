@@ -12,10 +12,10 @@ using System.Threading.Tasks;
 
 namespace SanTint.MessageCenterCore.NettyClient 
 {
-    public class ClientHandler : ChannelHandlerAdapter, IDisposable
+    public class NettyClientChannelHandler : ChannelHandlerAdapter, IDisposable
     {
         public event CommandReceiveEvent MessageReceived;
-        public ClientHandler()
+        public NettyClientChannelHandler()
         {
         }
 

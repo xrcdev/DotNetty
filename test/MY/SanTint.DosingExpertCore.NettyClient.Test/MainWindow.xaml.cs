@@ -59,7 +59,7 @@ namespace SanTint.MessageCenterCore.NettyClient
                            pipeline.AddLast(new MessageCodecs());
                            pipeline.AddLast(new IdleStateHandler(60, 0, 0));//第一个参数为读，第二个为写，第三个 
 
-                           ClientHandler cHandler = new ClientHandler();
+                           NettyClientChannelHandler cHandler = new NettyClientChannelHandler();
                            cHandler.MessageReceived += CHandler_MessageReceived;
                            pipeline.AddLast(cHandler);
 

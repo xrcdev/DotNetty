@@ -15,13 +15,15 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
         public IList<string> Hostnames { get; set; } = new List<string>();
         public string UserName { get; set; } = string.Empty;
         public string Password { get; set; } = string.Empty;
-        public string ExchangeName { get; set; } = string.Empty;
+
+
+        //public string ExchangeName { get; set; } = string.Empty;
         /// <summary>
         ///  "direct" "fanout" "headers" "topic";
         /// </summary>
-        public string ExchangeType { get; set; } = "direct";
-        public string RouteKey { get; set; } = string.Empty;
-        public string QueueName { get; set; } = string.Empty;
+        //public string ExchangeType { get; set; } = "direct";
+        //public string RouteKey { get; set; } = string.Empty;
+        //public string QueueName { get; set; } = string.Empty;
 
         public RabbitMQDeliveryMode DeliveryMode { get; set; } = RabbitMQDeliveryMode.Durable;
 
@@ -34,10 +36,10 @@ namespace SanTint.MessageCenterCore.RabbitMQProxy
         {
             UserName = config.UserName;
             Password = config.Password;
-            ExchangeName = config.ExchangeName;
-            ExchangeType = config.ExchangeType;
+            //ExchangeName = config.ExchangeName;
+            //ExchangeType = config.ExchangeType;
             DeliveryMode = config.DeliveryMode;
-            RouteKey = config.RouteKey;
+            //RouteKey = config.RouteKey;
             Port = config.Port;
             VHost = config.VHost;
             SslOption = config.SslOption;
